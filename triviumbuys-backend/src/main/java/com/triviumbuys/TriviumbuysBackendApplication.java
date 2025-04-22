@@ -23,7 +23,7 @@ public class TriviumbuysBackendApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(TriviumbuysBackendApplication.class, args);
-        System.out.println("Started");
+        System.out.println("Started Successfully");
     }
 
     @Override
