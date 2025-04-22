@@ -4,8 +4,6 @@ import { appConfig } from './app/app.config';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr'; // ✅ Add this for Toastr
 
-throw new Error('Forcefully failing Jenkins build');
-hi what to do for this error 
 bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
