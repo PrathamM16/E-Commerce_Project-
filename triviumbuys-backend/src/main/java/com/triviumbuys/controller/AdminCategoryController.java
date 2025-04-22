@@ -36,4 +36,9 @@ public class AdminCategoryController {
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         return categoryService.deleteCategory(id);
     }
+    @GetMapping("/test")
+    public String test() {
+    // Forgot to return something
+    }
+
 }
