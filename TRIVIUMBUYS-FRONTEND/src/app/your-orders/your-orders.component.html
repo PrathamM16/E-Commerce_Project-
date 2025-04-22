@@ -1,0 +1,94 @@
+<div class="your-orders-page">
+  <div class="page-header">
+    <h2>Your Orders 📦</h2>
+    <button class="dashboard-btn" (click)="goToDashboard()">
+      <span>🏠</span> Dashboard
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading your orders...</p>
+  </div>
+
+  <div *ngIf="!loading && orders.length === 0" class="no-orders">
+    <div class="empty-state">
+      <div class="empty-icon">🛒</div>
+      <p>No orders found. Start shopping!</p>
+      <button class="shop-now-btn" (click)="goToDashboard()">Shop Now</button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && orders.length > 0" class="orders-list">
+    <div class="order-card" *ngFor="let order of orders">
+      <div class="order-header">
+        <h3>Order #{{ order.id }}</h3>
+        <div class="status-badge" [ngClass]="getStatusClass(order.status)">
+          {{ order.status || 'PLACED' }}
+        </div>
+      </div>
+      <div class="order-info">
+        <p><strong>Order Date:</strong> {{ formatDate(order.orderDate) }}</p>
+        <p><strong>Total Amount:</strong> ₹{{ order.totalAmount }}</p>
+      </div>
+      <button class="view-details-btn" (click)="viewOrderDetails(order.id)">
+        <span>View Details</span>
+        <span class="btn-icon">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Order Details Dialog -->
+<div class="dialog-backdrop" *ngIf="showDialog" (click)="closeDialog()">
+  <div class="dialog-container" *ngIf="selectedOrder" (click)="preventClose($event)">
+    <div class="dialog-header">
+      <h3>Order Details #{{ selectedOrder.id }}</h3>
+      <button class="close-btn" (click)="closeDialog()">×</button>
+    </div>
+    
+    <div class="dialog-content">
+      <div class="order-details-section">
+        <h4>Order Information</h4>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Order Date</span>
+            <span class="detail-value">{{ formatDate(selectedOrder.orderDate) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Status</span>
+            <span class="detail-value status-badge" [ngClass]="getStatusClass(selectedOrder.status)">
+              {{ selectedOrder.status || 'PLACED' }}
+            </span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Total Amount</span>
+            <span class="detail-value price">₹{{ selectedOrder.totalAmount }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedOrder.items && selectedOrder.items.length > 0" class="order-items-section">
+        <h4>Order Items</h4>
+        <ul>
+          <li *ngFor="let item of selectedOrder.items">
+            <strong>{{ item.productName }}</strong> - Qty: {{ item.quantity }}, Price: ₹{{ item.price }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="shipping-section" *ngIf="selectedOrder.shippingAddress">
+        <h4>Shipping Address</h4>
+        <p class="address">
+          {{ selectedOrder.shippingAddress.street }}, {{ selectedOrder.shippingAddress.city }}<br>
+          {{ selectedOrder.shippingAddress.state }}, {{ selectedOrder.shippingAddress.postalCode }}<br>
+          {{ selectedOrder.shippingAddress.country }}
+        </p>
+      </div>
+    </div>
+    
+    <div class="dialog-footer">
+      <button class="close-dialog-btn" (click)="closeDialog()">Close</button>
+    </div>
+  </div>
+</div>

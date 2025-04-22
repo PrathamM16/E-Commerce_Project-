@@ -1,0 +1,160 @@
+<div class="payment-page">
+  <div class="payment-container">
+    <div class="payment-header">
+      <h2>Complete Your Payment</h2>
+      <div class="secure-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>Secure Payment</span>
+      </div>
+    </div>
+    
+    <!-- Credit Card Visual Representation -->
+    <div class="credit-card-container" [class.flipped]="showCardBack">
+      <div class="credit-card">
+        <div class="credit-card-front">
+          <div class="card-type" [ngClass]="getCardType()"></div>
+          <div class="card-number">
+            {{ cardNumber || '•••• •••• •••• ••••' }}
+          </div>
+          <div class="card-details">
+            <div class="card-holder">
+              <div class="label">Card Holder</div>
+              <div class="value">{{ cardHolderName || 'YOUR NAME' }}</div>
+            </div>
+            <div class="card-expiry">
+              <div class="label">Expires</div>
+              <div class="value">{{ expiryDate || 'MM/YY' }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="credit-card-back">
+          <div class="card-stripe"></div>
+          <div class="card-cvv">
+            <div class="cvv-label">CVV</div>
+            <div class="cvv-box">{{ cvv || '•••' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <div class="loading-text">Processing Payment...</div>
+    </div>
+    
+    <!-- Success Animation -->
+    <div class="success-overlay" *ngIf="paymentSuccess">
+      <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <div class="success-text">Payment Successful!</div>
+      <div class="success-message">Redirecting to your orders...</div>
+    </div>
+
+    <!-- Payment Form -->
+    <form class="payment-form" [class.submitted]="formSubmitted">
+      <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <div class="input-container" [class.error]="errors['cardNumber']">
+          <input 
+            type="text" 
+            id="cardNumber" 
+            [value]="cardNumber" 
+            (input)="validateCardNumber($event)" 
+            placeholder="0000 0000 0000 0000"
+            autocomplete="cc-number">
+          <div class="card-icon" [ngClass]="getCardType()"></div>
+        </div>
+        <div class="error-message" *ngIf="errors['cardNumber']">{{ errors['cardNumber'] }}</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="cardHolderName">Card Holder Name</label>
+        <div class="input-container" [class.error]="errors['cardHolderName']">
+          <input 
+            type="text" 
+            id="cardHolderName" 
+            [value]="cardHolderName" 
+            (input)="validateCardHolderName($event)" 
+            placeholder="Name on Card"
+            autocomplete="cc-name">
+        </div>
+        <div class="error-message" *ngIf="errors['cardHolderName']">{{ errors['cardHolderName'] }}</div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group half-width">
+          <label for="expiryDate">Expiry Date</label>
+          <div class="input-container" [class.error]="errors['expiryDate']">
+            <input 
+              type="text" 
+              id="expiryDate" 
+              [value]="expiryDate" 
+              (input)="validateExpiryDate($event)" 
+              (keyup)="handleSlashInsertion($event)"
+              placeholder="MM/YY"
+              autocomplete="cc-exp">
+          </div>
+          <div class="error-message" *ngIf="errors['expiryDate']">{{ errors['expiryDate'] }}</div>
+        </div>
+        
+        <div class="form-group half-width">
+          <label for="cvv">CVV</label>
+          <div class="input-container" [class.error]="errors['cvv']">
+            <input 
+              type="text" 
+              id="cvv" 
+              [value]="cvv" 
+              (input)="validateCVV($event)" 
+              (focus)="showCardBack = true"
+              (blur)="onCVVBlur()"
+              placeholder="CVV"
+              autocomplete="cc-csc">
+            <div class="cvv-info" title="3-digit security code on the back of your card">?</div>
+          </div>
+          <div class="error-message" *ngIf="errors['cvv']">{{ errors['cvv'] }}</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="address">Delivery Address</label>
+        <div class="input-container" [class.error]="errors['address']">
+          <textarea 
+            id="address" 
+            name="address"
+            [(ngModel)]="address" 
+            placeholder="Enter your full delivery address"
+            autocomplete="street-address"></textarea>
+        </div>
+        <div class="error-message" *ngIf="errors['address']">{{ errors['address'] }}</div>
+      </div>
+      
+      <div class="order-summary">
+        <div class="summary-item">
+          <span>Subtotal:</span>
+          <span>₹{{ totalPrice.toFixed(2) }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Shipping:</span>
+          <span>Free</span>
+        </div>
+        <div class="summary-item total">
+          <span>Total:</span>
+          <span>₹{{ totalPrice.toFixed(2) }}</span>
+        </div>
+      </div>
+      
+      <button type="button" class="pay-button" (click)="placeOrderAndPay()" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Pay ₹{{ totalPrice.toFixed(2) }}</span>
+        <span *ngIf="isLoading">Processing...</span>
+      </button>
+    </form>
+  </div>
+</div>

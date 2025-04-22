@@ -1,0 +1,163 @@
+<div class="analytics-container">
+  <h2>Analytics Management</h2>
+  
+  <div *ngIf="!dataUploaded" class="no-data-message">
+    <p>No data available. Please upload Excel files to view analytics.</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    Loading...
+  </div>
+
+  <div class="upload-section">
+    <div class="upload-row">
+      <div class="upload-group">
+        <label for="ordersFile">Upload Orders:</label>
+        <div class="file-input-group">
+          <input type="file" id="ordersFile" (change)="onOrdersFileSelected($event)" accept=".xlsx, .xls">
+          <button class="upload-btn" (click)="uploadOrders()" [disabled]="isLoading">Upload Orders</button>
+        </div>
+      </div>
+      
+      <div class="upload-group">
+        <label for="productsFile">Upload Products:</label>
+        <div class="file-input-group">
+          <input type="file" id="productsFile" (change)="onProductsFileSelected($event)" accept=".xlsx, .xls">
+          <button class="upload-btn" (click)="uploadProducts()" [disabled]="isLoading">Upload Products</button>
+        </div>
+      </div>
+      
+      <div class="upload-group">
+        <label for="customersFile">Upload Customers:</label>
+        <div class="file-input-group">
+          <input type="file" id="customersFile" (change)="onCustomersFileSelected($event)" accept=".xlsx, .xls">
+          <button class="upload-btn" (click)="uploadCustomers()" [disabled]="isLoading">Upload Customers</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="analytics-data">
+    <h3>Analytics Summary</h3>
+    <div class="data-cards">
+      <div class="data-card">
+        <div class="card-label">Total Revenue</div>
+        <div class="card-value">₹{{ analyticsData.totalRevenue || 0 }}</div>
+      </div>
+      
+      <div class="data-card">
+        <div class="card-label">Total Orders</div>
+        <div class="card-value">{{ analyticsData.totalOrders || 0 }}</div>
+      </div>
+      
+      <div class="data-card">
+        <div class="card-label">Total Customers</div>
+        <div class="card-value">{{ analyticsData.totalCustomers || 0 }}</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div *ngIf="hasPredictionData" class="prediction-section">
+    <h3>Revenue Prediction (Next 7 Days)</h3>
+    <div class="prediction-list">
+      <div class="prediction-item" *ngFor="let item of predictionData | keyvalue">
+        <span class="prediction-date">{{ item.key }}:</span>
+        <span class="prediction-value">₹{{ item.value | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="charts-section">
+    <h2>Analytics Graphs</h2>
+    
+    <!-- Revenue Line Chart -->
+    <div class="chart-container" *ngIf="hasRevenueChartData">
+      <h3>Revenue Over Time</h3>
+      <div class="chart-wrapper">
+        <ngx-charts-line-chart
+          [view]="[700, 400]"
+          [scheme]="colorScheme"
+          [results]="revenueChartData"
+          [gradient]="true"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="false"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          xAxisLabel="Date"
+          yAxisLabel="Revenue"
+          [autoScale]="true">
+        </ngx-charts-line-chart>
+      </div>
+    </div>
+    
+    <div *ngIf="!hasRevenueChartData" class="empty-chart">
+      <p>Revenue chart will be displayed after uploading orders data.</p>
+    </div>
+    
+    <hr>
+    
+    <!-- Order Status Pie Chart -->
+    <div class="chart-container" *ngIf="hasOrderStatusData">
+      <h3>Order Status Distribution</h3>
+      <div class="chart-wrapper">
+        <ngx-charts-pie-chart
+          [view]="[700, 400]"
+          [scheme]="colorScheme"
+          [results]="orderStatusData"
+          [legend]="true"
+          [doughnut]="false">
+        </ngx-charts-pie-chart>
+      </div>
+    </div>
+    
+    <div *ngIf="!hasOrderStatusData" class="empty-chart">
+      <p>Order status chart will be displayed after uploading orders data.</p>
+    </div>
+    
+    <hr>
+    
+    <!-- Category Sales Bar Chart -->
+    <div class="chart-container" *ngIf="hasCategorySalesData">
+      <h3>Category Sales</h3>
+      <div class="chart-wrapper">
+        <ngx-charts-bar-vertical
+          [view]="[700, 400]"
+          [scheme]="colorScheme"
+          [results]="categorySalesData"
+          [gradient]="true"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="false"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          xAxisLabel="Category"
+          yAxisLabel="Sales">
+        </ngx-charts-bar-vertical>
+      </div>
+    </div>
+    
+    <div *ngIf="!hasCategorySalesData" class="empty-chart">
+      <p>Category sales chart will be displayed after uploading products data.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="action-section">
+    <button class="download-btn" (click)="downloadPDFReport()" [disabled]="isLoading || (!hasRevenueChartData && !hasOrderStatusData && !hasCategorySalesData)">
+      <i class="download-icon"></i>
+      Download Full Analytics Report (PDF)
+    </button>
+  </div>
+</div>

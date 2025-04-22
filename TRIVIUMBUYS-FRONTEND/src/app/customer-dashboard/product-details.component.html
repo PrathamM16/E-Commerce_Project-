@@ -1,0 +1,56 @@
+<div class="product-details-container" *ngIf="product">
+  <div class="product-content">
+    <!-- Product Image -->
+    <div class="product-image-wrapper">
+      <img 
+        [src]="'http://localhost:8080/uploads/' + product.id" 
+        alt="{{ product.name }}" 
+        loading="lazy" 
+        class="product-image" 
+        onerror="this.src='assets/placeholder.jpg'" 
+      />
+    </div>
+
+    <!-- Product Information -->
+    <div class="product-info">
+      <h2 class="product-title">{{ product.name }}</h2>
+      <p class="description">{{ product.description }}</p>
+      
+      <div class="price-tag">
+        <h4>Price: <span class="price-value">₹ {{ product.price }}</span></h4>
+      </div>
+      
+      <div class="product-meta">
+        <p><strong>Brand:</strong> {{ product.brand }}</p>
+        <p><strong>Category:</strong> {{ product.category?.name }}</p>
+        <p><strong>Stock Available:</strong> <span class="stock-badge">{{ product.stock }}</span></p>
+      </div>
+
+      <div class="quantity-selector">
+        <button mat-button class="qty-btn" color="primary" (click)="decreaseQuantity()">➖</button>
+      
+        <input 
+          type="number"
+          class="qty-input"
+          [(ngModel)]="quantity"
+          [min]="1"
+          [max]="product.stock"
+          (change)="onManualQuantityChange()"
+        />
+      
+        <button mat-button class="qty-btn" color="primary" (click)="increaseQuantity()">➕</button>
+      </div>
+      
+      
+
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" class="cart-btn" (click)="addToCart()">Add to Cart 🛒</button>
+        <button mat-raised-button color="accent" class="buy-btn" (click)="buyNow()">Buy Now 🚀</button>
+      </div>
+
+      <div class="back-link">
+        <a routerLink="/customer-dashboard">⬅ Back to Products</a>
+      </div>
+    </div>
+  </div>
+</div>

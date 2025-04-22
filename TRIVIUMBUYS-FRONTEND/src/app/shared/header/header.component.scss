@@ -1,0 +1,247 @@
+// header.component.scss
+
+// Variables (matching your site's theme)
+$primary-color: #3a36e0;
+$secondary-color: #6c63ff;
+$accent-color: #ff3d71;
+$header-bg: linear-gradient(135deg, #0f2d5f, #2196f3);
+$white: #ffffff;
+$yellow: #ffd600;
+$transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$transition-medium: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+@keyframes headerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: $header-bg;
+  color: $white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  animation: headerFadeIn $transition-medium forwards;
+  
+  .logo {
+    .logo-link {
+      text-decoration: none;
+      font-size: 26px;
+      color: $white;
+      font-weight: 700;
+      position: relative;
+      display: flex;
+      align-items: center;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background-color: $yellow;
+        transition: width $transition-medium;
+      }
+      
+      &:hover::after {
+        width: 100%;
+      }
+      
+      .logo-icon {
+        margin-right: 8px;
+        font-size: 30px;
+      }
+    }
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    
+    a {
+      text-decoration: none;
+      color: $white;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all $transition-fast;
+      position: relative;
+      padding: 8px 0;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 3px;
+        background-color: $white;
+        transition: all $transition-medium;
+        transform: translateX(-50%);
+      }
+      
+      &:hover {
+        color: $yellow;
+        
+        &::after {
+          width: 100%;
+          background-color: $yellow;
+        }
+      }
+      
+      &.active-link {
+        color: $yellow;
+        
+        &::after {
+          width: 70%;
+          background-color: $yellow;
+        }
+      }
+      
+      .mat-icon {
+        vertical-align: middle;
+      }
+      
+      &.cart-link {
+        .cart-container {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          padding-right: 5px;
+          
+          .cart-badge {
+            position: absolute;
+            top: -10px;
+            right: -5px;
+            background-color: $accent-color;
+            color: $white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+          }
+        }
+        
+        &:hover .cart-badge {
+          background-color: darken($accent-color, 5%);
+        }
+      }
+    }
+    
+    .login-button, .logout-button {
+      background: rgba(255, 255, 255, 0.15);
+      color: $white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all $transition-fast;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      
+      .login-icon, .logout-icon {
+        font-size: 18px;
+      }
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-2px);
+      }
+    }
+    
+    .logout-button {
+      background: rgba(255, 107, 107, 0.15);
+      border-color: rgba(255, 107, 107, 0.3);
+      
+      &:hover {
+        background: rgba(255, 107, 107, 0.25);
+      }
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .header {
+    padding: 15px 20px;
+    
+    .logo .logo-link {
+      font-size: 22px;
+    }
+    
+    .nav-links {
+      gap: 15px;
+      
+      a {
+        font-size: 14px;
+        
+        &.cart-link .cart-container .cart-badge {
+          width: 18px;
+          height: 18px;
+          font-size: 11px;
+          top: -8px;
+          right: -5px;
+        }
+      }
+      
+      .login-button, .logout-button {
+        padding: 6px 15px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    flex-direction: column;
+    padding: 15px;
+    
+    .logo {
+      margin-bottom: 15px;
+    }
+    
+    .nav-links {
+      width: 100%;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      
+      a, .logout-button {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

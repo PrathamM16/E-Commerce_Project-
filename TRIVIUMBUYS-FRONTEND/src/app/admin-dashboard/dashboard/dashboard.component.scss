@@ -1,0 +1,731 @@
+@use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+// Variables
+$primary-color: #3b82f6;
+$primary-light: rgba(59, 130, 246, 0.1);
+$secondary-color: #6366f1;
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$danger-color: #ef4444;
+$dark-color: #1f2937;
+$gray-color: #6b7280;
+$light-gray: #f3f4f6;
+$white: #ffffff;
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$border-radius: 0.5rem;
+$transition-normal: all 0.3s ease;
+$transition-slow: all 0.5s ease;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin card {
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-md;
+  transition: $transition-normal;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-5px);
+  }
+}
+
+color-hover-primary {
+  color: color.adjust($primary-color, $lightness: -10%);
+}
+
+.color-hover-danger {
+  background: color.adjust($danger-color, $lightness: -10%);
+}
+// Main Dashboard Styles
+.admin-dashboard {
+  font-family: 'Poppins', sans-serif;
+  color: $dark-color;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  padding: 1.5rem;
+  
+  // Dashboard Header
+  .dashboard-header {
+    @include flex-between;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $light-gray;
+    
+    .welcome-section {
+      .welcome-text {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: $dark-color;
+        margin-bottom: 0.5rem;
+        
+        .username {
+          color: $primary-color;
+          position: relative;
+          
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: $primary-color;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+          }
+          
+          &:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+          }
+        }
+      }
+      
+      .date-time {
+        color: $gray-color;
+        font-size: 0.9rem;
+        
+        .live-time {
+          background: $primary-light;
+          color: $primary-color;
+          padding: 0.25rem 0.5rem;
+          border-radius: 4px;
+          display: inline-block;
+          font-weight: 500;
+          animation: pulse 2s infinite;
+        }
+      }
+    }
+    
+    .profile-section {
+      @include flex-center;
+      gap: 1.5rem;
+      
+      .notifications {
+        position: relative;
+        cursor: pointer;
+        
+        .notification-icon {
+          font-size: 1.25rem;
+          color: $gray-color;
+          transition: $transition-normal;
+          
+          &:hover {
+            color: $primary-color;
+            transform: scale(1.1);
+          }
+        }
+        
+        .badge {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background: $danger-color;
+          color: $white;
+          font-size: 0.7rem;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          @include flex-center;
+          font-weight: 600;
+          animation: bounce 1s infinite alternate;
+        }
+      }
+      
+      .profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid $primary-color;
+        transition: $transition-normal;
+        
+        &:hover {
+          transform: scale(1.1);
+          box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+        }
+        
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+  
+  // Dashboard Content
+  .dashboard-content {
+    animation: fadeIn 0.8s ease-out;
+    
+    // Stats Cards
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      
+      .stat-card {
+        @include card;
+        display: flex;
+        padding: 1.5rem;
+        position: relative;
+        z-index: 1;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-size: 400% 400%;
+          z-index: -1;
+          opacity: 0;
+          transition: opacity 0.5s ease;
+          border-radius: $border-radius;
+        }
+        
+        &:hover::before {
+          opacity: 0.05;
+          animation: gradientBackground 3s ease infinite;
+        }
+        
+        .card-icon {
+          width: 50px;
+          height: 50px;
+          border-radius: 12px;
+          @include flex-center;
+          margin-right: 1rem;
+          transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+          
+          i {
+            font-size: 1.5rem;
+            color: $white;
+          }
+        }
+        
+        &:hover .card-icon {
+          transform: rotateY(180deg);
+        }
+        
+        .card-content {
+          flex: 1;
+          
+          .card-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: $gray-color;
+            margin-bottom: 0.5rem;
+          }
+          
+          .card-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem;
+            background-clip: text;
+            transition: $transition-normal;
+          }
+          
+          .trend {
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            
+            i {
+              margin-right: 0.25rem;
+            }
+            
+            &.up {
+              color: $success-color;
+            }
+            
+            &.down {
+              color: $danger-color;
+            }
+          }
+        }
+        
+        &.revenue-card {
+          .card-icon {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+          }
+          
+          &:hover .card-value {
+            background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+          
+          &::before {
+            background: linear-gradient(-45deg, #dbeafe, #3b82f6, #bfdbfe, #2563eb);
+          }
+        }
+        
+        &.orders-card {
+          .card-icon {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          }
+          
+          &:hover .card-value {
+            background-image: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+          
+          &::before {
+            background: linear-gradient(-45deg, #d1fae5, #10b981, #a7f3d0, #059669);
+          }
+        }
+        
+        &.customers-card {
+          .card-icon {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+          }
+          
+          &:hover .card-value {
+            background-image: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+          
+          &::before {
+            background: linear-gradient(-45deg, #fef3c7, #f59e0b, #fde68a, #d97706);
+          }
+        }
+        
+        &.products-card {
+          .card-icon {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+          }
+          
+          &:hover .card-value {
+            background-image: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+          
+          &::before {
+            background: linear-gradient(-45deg, #ede9fe, #8b5cf6, #ddd6fe, #7c3aed);
+          }
+        }
+      }
+    }
+    
+    // Charts Container
+    .charts-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      
+      @media (min-width: 992px) {
+        grid-template-columns: 2fr 1fr;
+      }
+      
+      .chart-card {
+        @include card;
+        
+        &.revenue-chart-card {
+          background: linear-gradient(to right, #ffffff, #f9fafb);
+        }
+        
+        &.category-chart-card {
+          background: linear-gradient(to left, #ffffff, #f9fafb);
+        }
+        
+        .chart-header {
+          @include flex-between;
+          padding: 1.25rem 1.5rem;
+          border-bottom: 1px solid $light-gray;
+          
+          .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: $dark-color;
+            margin: 0;
+          }
+          
+          .chart-actions {
+            .period-selector {
+              border: 1px solid $light-gray;
+              border-radius: 6px;
+              padding: 0.5rem;
+              font-size: 0.875rem;
+              color: $gray-color;
+              font-family: 'Poppins', sans-serif;
+              outline: none;
+              transition: $transition-normal;
+              
+              &:focus {
+                border-color: $primary-color;
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+              }
+            }
+            
+            .refresh-btn {
+              background: none;
+              border: none;
+              color: $gray-color;
+              font-size: 0.875rem;
+              cursor: pointer;
+              transition: $transition-normal;
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+              @include flex-center;
+              
+              &:hover {
+                background: $primary-light;
+                color: $primary-color;
+                transform: rotate(180deg);
+              }
+            }
+          }
+        }
+        
+        .chart-body {
+          padding: 1.5rem;
+          height: 350px;
+        }
+      }
+    }
+    
+    // Recent Orders Table
+    .recent-orders-card {
+      @include card;
+      margin-bottom: 2rem;
+      
+      .card-header {
+        @include flex-between;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid $light-gray;
+        
+        .card-title {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: $dark-color;
+          margin: 0;
+        }
+        
+        .view-all {
+          font-size: 0.875rem;
+          color: $primary-color;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          transition: $transition-normal;
+          
+          i {
+            margin-left: 0.375rem;
+            transition: transform 0.3s ease;
+          }
+          
+          &:hover {
+            color: darken($primary-color, 10%);
+            
+            i {
+              transform: translateX(4px);
+            }
+          }
+        }
+      }
+      
+      .card-body {
+        padding: 1rem;
+        
+        .table-responsive {
+          overflow-x: auto;
+          width: 100%;
+          
+          &::-webkit-scrollbar {
+            height: 6px;
+          }
+          
+          &::-webkit-scrollbar-track {
+            background: $light-gray;
+          }
+          
+          &::-webkit-scrollbar-thumb {
+            background: $gray-color;
+            border-radius: 3px;
+          }
+        }
+        
+        .orders-table {
+          width: 100%;
+          border-collapse: collapse;
+          
+          th, td {
+            padding: 1rem;
+            text-align: left;
+          }
+          
+          th {
+            font-weight: 500;
+            color: $gray-color;
+            font-size: 0.875rem;
+            border-bottom: 1px solid $light-gray;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+          
+          .order-row {
+            border-bottom: 1px solid $light-gray;
+            transition: $transition-normal;
+            opacity: 0;
+            transform: translateY(10px);
+            
+            &.fade-in {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            
+            &:hover {
+              background-color: rgba(59, 130, 246, 0.05);
+            }
+            
+            &:last-child {
+              border-bottom: none;
+            }
+            
+            .order-id {
+              font-weight: 600;
+              color: $dark-color;
+            }
+            
+            .customer-name {
+              font-weight: 500;
+              color: $dark-color;
+            }
+            
+            .order-date {
+              color: $gray-color;
+              font-size: 0.875rem;
+            }
+            
+            .order-amount {
+              font-weight: 600;
+              color: $dark-color;
+            }
+            
+            .status-badge {
+              display: inline-block;
+              padding: 0.375rem 0.75rem;
+              border-radius: 9999px;
+              font-size: 0.75rem;
+              font-weight: 600;
+              text-transform: uppercase;
+              
+              &.placed {
+                background-color: #dbeafe;
+                color: #1e40af;
+              }
+              
+              &.confirmed {
+                background-color: #e0e7ff;
+                color: #4338ca;
+              }
+              
+              &.processing {
+                background-color: #fef3c7;
+                color: #92400e;
+              }
+              
+              &.shipped {
+                background-color: #d1fae5;
+                color: #065f46;
+              }
+              
+              &.delivered {
+                background-color: #dcfce7;
+                color: #166534;
+              }
+              
+              &.cancelled {
+                background-color: #fee2e2;
+                color: #b91c1c;
+              }
+            }
+            
+            .order-actions {
+              .action-btn {
+                background: none;
+                border: none;
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+                @include flex-center;
+                color: $gray-color;
+                font-size: 0.875rem;
+                cursor: pointer;
+                transition: $transition-normal;
+                
+                &:hover {
+                  background: $primary-light;
+                  color: $primary-color;
+                  transform: scale(1.1);
+                }
+                
+                &.view-btn:hover {
+                  background: rgba(59, 130, 246, 0.1);
+                  color: $primary-color;
+                }
+              }
+            }
+          }
+          
+          // Add delay for each row to create a cascade effect
+          @for $i from 1 through 10 {
+            .order-row:nth-child(#{$i}) {
+              transition-delay: #{$i * 0.1}s;
+            }
+          }
+        }
+        
+        .no-data {
+          padding: 3rem 0;
+          text-align: center;
+          color: $gray-color;
+          
+          .no-data-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: $light-gray;
+          }
+          
+          p {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+  
+  // Loading State
+  .loading-container {
+    @include flex-center;
+    flex-direction: column;
+    height: 400px;
+    
+    .spinner {
+      display: flex;
+      margin-bottom: 1rem;
+      
+      .bounce1, .bounce2, .bounce3 {
+        width: 12px;
+        height: 12px;
+        background-color: $primary-color;
+        border-radius: 100%;
+        display: inline-block;
+        margin: 0 3px;
+        animation: bounce 1.4s infinite ease-in-out both;
+      }
+      
+      .bounce1 {
+        animation-delay: -0.32s;
+      }
+      
+      .bounce2 {
+        animation-delay: -0.16s;
+      }
+    }
+    
+    p {
+      color: $gray-color;
+      font-size: 1rem;
+    }
+  }
+  
+  // Error State
+  .error-container {
+    @include flex-center;
+    flex-direction: column;
+    padding: 3rem 2rem;
+    background: #fee2e2;
+    border-radius: $border-radius;
+    margin: 2rem auto;
+    max-width: 500px;
+    text-align: center;
+    
+    .error-icon {
+      font-size: 3rem;
+      color: $danger-color;
+      margin-bottom: 1rem;
+    }
+    
+    h3 {
+      color: $danger-color;
+      margin-bottom: 0.5rem;
+    }
+    
+    p {
+      color: #b91c1c;
+      margin-bottom: 1.5rem;
+    }
+    
+    .retry-btn {
+      background: $danger-color;
+      color: $white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: $transition-normal;
+      
+      &:hover {
+        background: darken($danger-color, 10%);
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+@keyframes gradientBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+// For darken function
+@function darken($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}

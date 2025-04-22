@@ -1,0 +1,114 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2 class="text-center mb-4">Delivery Person Registration</h2>
+  
+        <form [formGroup]="deliverySignupForm" (ngSubmit)="onSubmit()">
+  
+          <!-- Name -->
+          <div class="mb-3">
+            <label>Name</label>
+            <input type="text" class="form-control" formControlName="name">
+            <div *ngIf="deliverySignupForm.get('name')?.invalid && deliverySignupForm.get('name')?.touched" class="text-danger">
+              Name is required.
+            </div>
+          </div>
+  
+          <!-- Username -->
+          <div class="mb-3">
+            <label>Username</label>
+            <input type="text" class="form-control" formControlName="username">
+            <div *ngIf="deliverySignupForm.get('username')?.invalid && deliverySignupForm.get('username')?.touched" class="text-danger">
+              Username is required.
+            </div>
+          </div>
+  
+          <!-- Aadhar Number -->
+          <div class="mb-3">
+            <label>Aadhar Number</label>
+            <input type="text" class="form-control" formControlName="aadharNumber">
+            <div *ngIf="deliverySignupForm.get('aadharNumber')?.invalid && deliverySignupForm.get('aadharNumber')?.touched" class="text-danger">
+              Aadhar number is required.
+            </div>
+          </div>
+  
+          <!-- PAN Number -->
+          <div class="mb-3">
+            <label>PAN Number</label>
+            <input type="text" class="form-control" formControlName="panNumber">
+            <div *ngIf="deliverySignupForm.get('panNumber')?.invalid && deliverySignupForm.get('panNumber')?.touched" class="text-danger">
+              PAN number is required.
+            </div>
+          </div>
+  
+          <!-- Driving License -->
+          <div class="mb-3">
+            <label>Driving License</label>
+            <input type="text" class="form-control" formControlName="drivingLicense">
+            <div *ngIf="deliverySignupForm.get('drivingLicense')?.invalid && deliverySignupForm.get('drivingLicense')?.touched" class="text-danger">
+              Driving license is required.
+            </div>
+          </div>
+  
+          <!-- Phone -->
+          <div class="mb-3">
+            <label>Phone</label>
+            <input type="text" class="form-control" formControlName="phoneNumber">
+            <div *ngIf="deliverySignupForm.get('phoneNumber')?.invalid && deliverySignupForm.get('phoneNumber')?.touched" class="text-danger">
+              Valid phone number is required.
+            </div>
+          </div>
+  
+          <!-- Address -->
+          <div class="mb-3">
+            <label>Address</label>
+            <textarea class="form-control" formControlName="address"></textarea>
+            <div *ngIf="deliverySignupForm.get('address')?.invalid && deliverySignupForm.get('address')?.touched" class="text-danger">
+              Address is required.
+            </div>
+          </div>
+  
+          <!-- Bank Account Number -->
+          <div class="mb-3">
+            <label>Bank Account Number</label>
+            <input type="text" class="form-control" formControlName="bankAccountNumber">
+          </div>
+  
+          <!-- Confirm Bank Account Number -->
+          <div class="mb-3">
+            <label>Confirm Bank Account Number</label>
+            <input type="text" class="form-control" formControlName="confirmBankAccountNumber">
+            <div *ngIf="bankAccountMismatch" class="text-danger">
+              Bank account numbers do not match!
+            </div>
+          </div>
+  
+          <!-- Password -->
+          <div class="mb-3">
+            <label>Password</label>
+            <input type="password" class="form-control" formControlName="password">
+          </div>
+  
+          <!-- Confirm Password -->
+          <div class="mb-3">
+            <label>Confirm Password</label>
+            <input type="password" class="form-control" formControlName="confirmPassword">
+            <div *ngIf="passwordMismatch" class="text-danger">
+              Passwords do not match!
+            </div>
+          </div>
+  
+          <!-- Signup error -->
+          <div *ngIf="signupError" class="alert alert-danger">
+            {{ signupError }}
+          </div>
+  
+          <button type="submit" class="btn btn-success w-100" [disabled]="deliverySignupForm.invalid">
+            Register
+          </button>
+  
+        </form>
+      </div>
+    </div>
+  </div>
+  

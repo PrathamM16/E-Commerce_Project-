@@ -1,0 +1,37 @@
+<!-- header.component.html -->
+<header class="header">
+  <div class="logo">
+    <a routerLink="/" class="logo-link">
+      <span class="logo-icon">🛍️</span>
+      TriviumBuys
+    </a>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/customer-dashboard" routerLinkActive="active-link">
+      <mat-icon>home</mat-icon> Home
+    </a>
+    
+    <a routerLink="/cart" routerLinkActive="active-link" class="cart-link">
+      <span class="cart-container">
+        <mat-icon>shopping_cart</mat-icon>
+        <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+        Cart
+      </span>
+    </a>
+    
+    <a routerLink="/your-orders" routerLinkActive="active-link">
+      <mat-icon>inventory_2</mat-icon> Orders
+    </a>
+    
+    <!-- Show login button only if not logged in -->
+    <a *ngIf="!isLoggedIn()" routerLink="/login" routerLinkActive="active-link" class="login-button">
+      <mat-icon class="login-icon">person</mat-icon> Login
+    </a>
+    
+    <!-- Show logout button only if logged in -->
+    <button *ngIf="isLoggedIn()" class="logout-button" (click)="logout()">
+      <mat-icon class="logout-icon">exit_to_app</mat-icon> Logout
+    </button>
+  </nav>
+</header>

@@ -1,0 +1,535 @@
+// Variables
+$primary-color: #4a6bff;
+$primary-light: #eef1ff;
+$secondary-color: #f05454;
+$text-color: #333;
+$text-light: #666;
+$background-color: #f8f9fc;
+$card-bg: #ffffff;
+$success-color: #00c853;
+$processing-color: #ffab00;
+$shipped-color: #304ffe;
+$cancelled-color: #e53935;
+$border-radius: 12px;
+$box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Base Styles
+.your-orders-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: $background-color;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: $text-color;
+}
+
+.page-header {
+  @include flex-between;
+  margin-bottom: 2.5rem;
+  
+  h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $primary-color;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .dashboard-btn {
+    background: transparent;
+    border: 2px solid $primary-color;
+    color: $primary-color;
+    padding: 0.6rem 1.2rem;
+    border-radius: $border-radius;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    
+    span {
+      margin-right: 0.5rem;
+    }
+    
+    &:hover {
+      background-color: $primary-color;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+// Loading State
+.loading {
+  @include flex-center;
+  flex-direction: column;
+  padding: 3rem;
+  background-color: $card-bg;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  margin: 2rem 0;
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba($primary-color, 0.2);
+    border-top: 5px solid $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: $text-light;
+    margin: 0;
+  }
+}
+
+// Empty State
+.no-orders {
+  @include flex-center;
+  margin: 2rem 0;
+  
+  .empty-state {
+    @include flex-center;
+    flex-direction: column;
+    padding: 3rem;
+    background-color: $card-bg;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    width: 100%;
+    max-width: 500px;
+    
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      color: $text-light;
+      opacity: 0.7;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    p {
+      font-size: 1.2rem;
+      color: $text-light;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .shop-now-btn {
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: $border-radius;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background-color: $primary-color;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+      }
+    }
+  }
+}
+
+// Orders List
+.orders-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.order-card {
+  background-color: $card-bg;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: $box-shadow;
+  transition: all 0.3s ease;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-header {
+    @include flex-between;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+      color: $text-color;
+    }
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    
+    &.status-delivered {
+      background-color: rgba($success-color, 0.1);
+      color: $success-color;
+    }
+    
+    &.status-shipped {
+      background-color: rgba($shipped-color, 0.1);
+      color: $shipped-color;
+    }
+    
+    &.status-processing {
+      background-color: rgba($processing-color, 0.1);
+      color: $processing-color;
+    }
+    
+    &.status-placed {
+      background-color: rgba($primary-color, 0.1);
+      color: $primary-color;
+    }
+    
+    &.status-cancelled {
+      background-color: rgba($cancelled-color, 0.1);
+      color: $cancelled-color;
+    }
+  }
+  
+  .order-info {
+    flex-grow: 1;
+    
+    p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+      
+      strong {
+        color: $text-light;
+      }
+    }
+  }
+  
+  .view-details-btn {
+    margin-top: 1.2rem;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: $border-radius;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    span {
+      margin-right: 0.5rem;
+    }
+    
+    .btn-icon {
+      transition: transform 0.3s ease;
+    }
+    
+    &:hover {
+      background-color: $primary-color;
+      
+      .btn-icon {
+        transform: translateX(4px);
+      }
+    }
+  }
+}
+
+// Dialog
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+  
+  .dialog-container {
+    background-color: white;
+    border-radius: $border-radius;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: scaleIn 0.3s ease;
+    
+    .dialog-header {
+      @include flex-between;
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 2;
+      
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+        color: $primary-color;
+      }
+      
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        color: $text-light;
+        cursor: pointer;
+        padding: 0.3rem;
+        line-height: 1;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          color: $secondary-color;
+          transform: scale(1.1);
+        }
+      }
+    }
+    
+    .dialog-content {
+      padding: 1.5rem;
+      
+      h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0 0 1rem 0;
+        color: $text-color;
+        position: relative;
+        padding-left: 1rem;
+        
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0.2rem;
+          height: 1rem;
+          width: 4px;
+          background-color: $primary-color;
+          border-radius: 2px;
+        }
+      }
+      
+      .order-details-section {
+        margin-bottom: 2rem;
+        
+        .details-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 1.5rem;
+          
+          .detail-item {
+            .detail-label {
+              display: block;
+              font-size: 0.9rem;
+              color: $text-light;
+              margin-bottom: 0.5rem;
+            }
+            
+            .detail-value {
+              font-size: 1.1rem;
+              font-weight: 500;
+              
+              &.price {
+                color: $secondary-color;
+                font-weight: 600;
+              }
+            }
+          }
+        }
+      }
+      
+      .order-items-section {
+        margin-bottom: 2rem;
+        
+        .order-item {
+          display: flex;
+          margin-bottom: 1rem;
+          padding: 1rem;
+          background-color: $primary-light;
+          border-radius: $border-radius;
+          transition: transform 0.2s ease;
+          
+          &:hover {
+            transform: translateX(5px);
+          }
+          
+          .item-image-placeholder {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            margin-right: 1rem;
+            
+            span {
+              font-size: 1.8rem;
+            }
+          }
+          
+          .item-details {
+            flex: 1;
+            
+            h5 {
+              font-size: 1.1rem;
+              margin: 0 0 0.5rem 0;
+              font-weight: 600;
+            }
+            
+            .item-meta {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 1rem;
+              
+              span {
+                font-size: 0.9rem;
+                color: $text-light;
+              }
+            }
+          }
+        }
+      }
+      
+      .shipping-section {
+        margin-bottom: 2rem;
+        
+        .address {
+          background-color: $primary-light;
+          padding: 1rem;
+          border-radius: $border-radius;
+          font-size: 1rem;
+          line-height: 1.6;
+        }
+      }
+    }
+    
+    .dialog-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: right;
+      position: sticky;
+      bottom: 0;
+      background-color: white;
+      
+      .close-dialog-btn {
+        background-color: #f1f2f6;
+        color: $text-color;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: $border-radius;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background-color: #e4e6ed;
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .your-orders-page {
+    padding: 1rem;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .orders-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .dialog-container {
+    width: 95%;
+    max-height: 80vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-details-section .details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .order-item {
+    flex-direction: column;
+    
+    .item-image-placeholder {
+      margin-bottom: 1rem;
+      margin-right: 0;
+    }
+  }
+}

@@ -1,0 +1,162 @@
+body {
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    animation: pageFade 1.2s ease;
+    margin-top: 50px;
+  
+    .row {
+      justify-content: center;
+    }
+  
+    .col-md-6 {
+      animation: bounceIn 1s ease;
+    }
+  
+    h2 {
+      font-size: 2.2rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #2f3542;
+      animation: slideDown 1s ease;
+    }
+  
+    form {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      animation: fadeScale 0.7s ease;
+  
+      .mb-3 {
+        position: relative;
+        margin-bottom: 1.5rem;
+  
+        label {
+          font-weight: 600;
+          color: #57606f;
+          margin-bottom: 0.5rem;
+          display: block;
+          transition: all 0.3s ease;
+        }
+  
+        input,
+        textarea {
+          width: 100%;
+          padding: 0.8rem;
+          border: 2px solid #dfe4ea;
+          border-radius: 10px;
+          font-size: 1rem;
+          transition: all 0.4s ease;
+          background: #f9f9f9;
+  
+          &:focus {
+            background: #ffffff;
+            border-color: #1e90ff;
+            box-shadow: 0 0 8px rgba(30, 144, 255, 0.3);
+            outline: none;
+          }
+        }
+  
+        .text-danger {
+          font-size: 0.85rem;
+          margin-top: 0.4rem;
+          color: #e74c3c;
+          animation: fadeIn 0.5s ease;
+        }
+      }
+  
+      .alert {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+        border-radius: 8px;
+        background: #f8d7da;
+        color: #721c24;
+      }
+  
+      button {
+        background: linear-gradient(135deg, #1e90ff, #3742fa);
+        border: none;
+        padding: 0.9rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+        border-radius: 30px;
+        transition: all 0.4s ease;
+        margin-top: 1.2rem;
+  
+        &:hover {
+          background: linear-gradient(135deg, #3742fa, #1e90ff);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(30, 144, 255, 0.3);
+        }
+  
+        &:active {
+          transform: scale(0.97);
+        }
+  
+        &:disabled {
+          background: #dcdde1;
+          color: #7f8c8d;
+          cursor: not-allowed;
+        }
+      }
+  
+      .text-center {
+        margin-top: 20px;
+  
+        p {
+          font-size: 0.95rem;
+          color: #636e72;
+  
+          a {
+            font-weight: bold;
+            text-decoration: none;
+            color: #1e90ff;
+            transition: color 0.3s ease;
+  
+            &:hover {
+              color: #3742fa;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // ANIMATIONS
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes slideDown {
+    0% { transform: translateY(-30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  
+  @keyframes bounceIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes fadeScale {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  @keyframes pageFade {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  

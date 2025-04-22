@@ -1,0 +1,277 @@
+// Enhanced Variables and Color Palette
+:root {
+  --color-primary: #3f51b5;
+  --color-primary-light: #7986cb;
+  --color-primary-dark: #303f9f;
+  --color-accent: #ff4081;
+  --color-accent-light: #ff80ab;
+  --color-background: #f5f5f5;
+  --color-background-light: #ffffff;
+  --color-text-primary: #333;
+  --color-text-secondary: #666;
+  --color-border: #e0e0e0;
+  --color-white: #ffffff;
+  --color-warn: #f44336;
+  --color-success: #4caf50;
+
+  // Enhanced Shadow and Depth
+  --shadow-subtle: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 6px 12px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+// Mixins for Advanced Styling
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin transition($property: all, $duration: 0.3s, $timing: cubic-bezier(0.4, 0, 0.2, 1)) {
+  transition: $property $duration $timing;
+}
+
+@mixin elegant-shadow {
+  box-shadow: var(--shadow-subtle);
+  @include transition(box-shadow);
+
+  &:hover {
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+// Animations with Enhanced Easing
+@keyframes smoothFadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+// Dialog and Form Container Styling
+.mat-dialog-content {
+  position: relative;
+  padding: 0 !important;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background-color: var(--color-background-light);
+  border-radius: 16px;
+  animation: smoothFadeIn 0.5s ease-out;
+  
+  // Enhanced Scrolling
+  max-height: 80vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  
+  // Custom Scrollbar with Elegant Design
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    margin: 15px 0;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-light);
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    
+    &:hover {
+      background-color: var(--color-primary);
+    }
+  }
+
+  // Form Header with Modern Underline
+  h2 {
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 2rem;
+    font-weight: 600;
+    position: relative;
+    font-size: 1.5rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--color-primary);
+      border-radius: 2px;
+    }
+  }
+
+  // Responsive Row Layout
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
+
+  // Width Classes with Flex Grow
+  .full-width {
+    flex: 1 1 100%;
+  }
+
+  .half-width {
+    flex: 1 1 calc(50% - 1.25rem);
+    
+    @media (max-width: 600px) {
+      flex: 1 1 100%;
+    }
+  }
+
+  // Image Preview with Enhanced Styling
+  .image-preview {
+    @include flex-center;
+    margin-bottom: 1.5rem;
+    
+    img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 16px;
+      @include elegant-shadow;
+      border: 4px solid var(--color-border);
+    }
+  }
+
+  // Refined Upload Row
+  .upload-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    label {
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="file"] {
+      @include transition;
+      padding: 1rem;
+      border: 2px dashed var(--color-border);
+      border-radius: 12px;
+      background-color: var(--color-background);
+      
+      &:hover {
+        border-color: var(--color-primary-light);
+        background-color: rgba(63, 81, 181, 0.05);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+      }
+    }
+  }
+
+  // Enhanced Button Styling
+  .button-row {
+    @include flex-center;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    button {
+      @include transition;
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      
+      &.mat-raised-button {
+        background: var(--color-primary);
+        color: var(--color-white);
+        @include elegant-shadow;
+
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+
+      &.mat-button {
+        color: var(--color-warn);
+        
+        &:hover {
+          background-color: rgba(244, 67, 54, 0.1);
+        }
+      }
+    }
+  }
+
+  // Manage Categories Button with Accent Style
+  .row.manage-categories-btn {
+    margin-bottom: 1rem;
+    
+    button {
+      color: var(--color-accent);
+      font-weight: 500;
+      
+      &:hover {
+        background-color: rgba(255, 64, 129, 0.1);
+      }
+    }
+  }
+}
+
+// Material Form Field Deep Customization
+::ng-deep {
+  .mat-form-field {
+    width: 100%;
+
+    &-wrapper {
+      padding-bottom: 1.25em;
+    }
+
+    &-label {
+      color: var(--color-text-secondary) !important;
+    }
+    
+    &-underline {
+      background-color: var(--color-border) !important;
+    }
+    
+    &-ripple {
+      background-color: var(--color-primary) !important;
+    }
+
+    &-error {
+      color: var(--color-warn);
+      font-size: 0.75rem;
+    }
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 600px) {
+  .form-container {
+    padding: 1.5rem;
+    border-radius: 0;
+  }
+}

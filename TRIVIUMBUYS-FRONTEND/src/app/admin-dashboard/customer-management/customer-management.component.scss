@@ -1,0 +1,79 @@
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Search Form */
+  .search-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  
+    .half-width {
+      flex: 1 1 45%;
+      margin-bottom: 15px;
+    }
+  
+    mat-form-field {
+      width: 100%;
+    }
+  
+    button {
+      min-width: 120px;
+    }
+  }
+  
+  /* Customer Table */
+  table {
+    width: 100%;
+    border-spacing: 0;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+  
+    th, td {
+      text-align: center;
+      padding: 16px;
+    }
+  
+    th {
+      background-color: #3f51b5;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  
+    tr:nth-child(even) td {
+      background-color: #f3f3f3;
+    }
+  
+    tr:hover {
+      background-color: #e8eaf6;
+    }
+  }
+  
+  /* Responsive Behavior */
+  @media (max-width: 768px) {
+    .search-form {
+      flex-direction: column;
+  
+      .half-width {
+        flex: 1 1 100%;
+      }
+  
+      button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  }
+  

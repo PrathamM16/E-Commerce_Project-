@@ -1,0 +1,246 @@
+/* analytics-management.component.scss */
+@use "sass:color";
+
+.analytics-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.analytics-container h2 {
+  margin-bottom: 24px;
+  color: #333;
+  font-size: 24px;
+}
+
+.no-data-message {
+  background-color: #e8f4f8;
+  color: #0277bd;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border-left: 4px solid #0277bd;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border-left: 4px solid #c62828;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 20px;
+  color: #4a6fdc;
+  font-weight: 500;
+  /* Add a spinning animation if you prefer */
+}
+
+.upload-section {
+  margin-bottom: 30px;
+}
+
+.upload-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.upload-group {
+  flex: 1;
+  min-width: 300px;
+}
+
+.upload-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.file-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-input-group input[type="file"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #4a6fdc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+button:hover:not([disabled]) {
+  background-color: color.adjust(#4a6fdc, $lightness: -10%);
+}
+
+button[disabled] {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+hr {
+  margin: 25px 0;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+.analytics-data {
+  margin-bottom: 30px;
+}
+
+.data-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.data-card {
+  flex: 1;
+  min-width: 200px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #4a6fdc;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.card-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.prediction-section {
+  margin-bottom: 30px;
+}
+
+.prediction-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.prediction-item {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prediction-date {
+  font-weight: 500;
+  color: #555;
+}
+
+.prediction-value {
+  font-weight: 600;
+  color: #2c7be5;
+}
+
+/* Chart Styles */
+.charts-section {
+  margin: 30px 0;
+}
+
+.chart-container {
+  margin-bottom: 40px;
+}
+
+.chart-container h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.chart-wrapper {
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+
+.empty-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 40px 20px;
+  min-height: 200px;
+  text-align: center;
+  margin-bottom: 40px;
+  border: 1px dashed #ccc;
+}
+
+.empty-chart p {
+  color: #666;
+  font-size: 16px;
+}
+
+/* Make charts responsive */
+@media (max-width: 768px) {
+  ::ng-deep {
+    .ngx-charts {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  
+  .chart-wrapper {
+    padding: 10px;
+  }
+}
+
+.action-section {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.download-btn {
+  padding: 12px 24px;
+  background-color: #28a745;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-btn:hover:not([disabled]) {
+  background-color: color.adjust(#28a745, $lightness: -10%);
+}
+
+.download-icon {
+  /* You can add an SVG icon or use a font icon here */
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}

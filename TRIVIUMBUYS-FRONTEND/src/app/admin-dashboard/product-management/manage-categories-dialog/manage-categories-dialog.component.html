@@ -1,0 +1,79 @@
+<!-- category-management.component.html -->
+<div class="category-management-container">
+  <h2>Manage Categories 
+    <span class="edit-mode-indicator" *ngIf="isEditMode">Edit Mode</span>
+  </h2>
+
+  <div class="form-container">
+    <form [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Category Name*</mat-label>
+        <input matInput formControlName="name" required placeholder="Enter category name">
+        <mat-icon matSuffix>category</mat-icon>
+        <mat-error *ngIf="categoryForm.controls['name'].hasError('required')">
+          Category name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description*</mat-label>
+        <textarea matInput formControlName="description" rows="3" required placeholder="Enter category description"></textarea>
+        <mat-error *ngIf="categoryForm.controls['description'].hasError('required')">
+          Description is required
+        </mat-error>
+      </mat-form-field>
+
+      <div class="button-row">
+        <button mat-raised-button color="primary" type="submit" [disabled]="categoryForm.invalid">
+          <mat-icon>{{ isEditMode ? 'update' : 'add_circle' }}</mat-icon>
+          {{ isEditMode ? 'Update Category' : 'Add Category' }}
+        </button>
+        
+        <button *ngIf="isEditMode" mat-button color="warn" type="button" (click)="cancelEdit()">
+          <mat-icon>cancel</mat-icon>
+          Cancel Edit
+        </button>
+        
+        <button mat-button color="basic" type="button" (click)="close()">
+          <mat-icon>close</mat-icon>
+          Close
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="categories-section">
+    <div class="section-header">
+      <h3>Existing Categories</h3>
+      <div class="category-count">
+        {{ categories.length }} {{ categories.length === 1 ? 'Category' : 'Categories' }}
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="categories.length === 0">
+      <mat-icon>category_off</mat-icon>
+      <p>No categories found. Create your first category above.</p>
+    </div>
+
+    <ul class="category-list" *ngIf="categories.length > 0">
+      <li *ngFor="let cat of categories" [class.editing]="isEditMode && editingCategoryId === cat.id">
+        <div class="category-info">
+          <div class="category-name">{{ cat.name }}</div>
+          <div class="category-description">{{ cat.description }}</div>
+        </div>
+        
+        <div class="category-actions">
+          <button mat-icon-button color="primary" (click)="editCategory(cat)" matTooltip="Edit Category">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteCategory(cat.id)" matTooltip="Delete Category">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="scroll-indicator" (click)="scrollToBottom()">
+    <mat-icon>arrow_downward</mat-icon>
+  </div>
+</div>

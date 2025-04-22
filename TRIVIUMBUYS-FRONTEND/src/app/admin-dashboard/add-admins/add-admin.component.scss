@@ -1,0 +1,124 @@
+.add-admin-form {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    margin: 2rem auto;
+    font-family: 'Poppins', sans-serif;
+    animation: fadeInUp 0.8s ease-in-out; // ✅ Fade animation
+  
+    h2 {
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: #1a2b3c;
+      text-align: center;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+  
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        padding: 0.8rem 1rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        width: 100%;
+        transition: border-color 0.3s, box-shadow 0.3s;
+  
+        &:focus {
+          border-color: #3f51b5;
+          box-shadow: 0 0 5px rgba(63, 81, 181, 0.5);
+          outline: none;
+        }
+      }
+  
+      h4 {
+        margin-top: 1.5rem;
+        font-size: 1.3rem;
+        color: #3f51b5;
+      }
+  
+      .access-checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+  
+        label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 1rem;
+          color: #4a5568;
+  
+          input[type="checkbox"] {
+            accent-color: #3f51b5;
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+  
+      button[type="submit"] {
+        margin-top: 2rem;
+        padding: 0.9rem;
+        background: linear-gradient(to right, #3f51b5, #303f9f);
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+  
+        &:hover {
+          background: linear-gradient(to right, #303f9f, #3f51b5);
+          transform: scale(1.02);
+        }
+      }
+    }
+  }
+  
+  // ✅ Fade Animation Keyframes
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  // ✅ Toast Beautification (You can add globally also if needed)
+  :host ::ng-deep .toast-success {
+    background-color: #4caf50 !important;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  :host ::ng-deep .toast-error {
+    background-color: #f44336 !important;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  :host ::ng-deep .toast-message {
+    font-size: 1rem;
+  }
+  
+  :host ::ng-deep .toast-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  

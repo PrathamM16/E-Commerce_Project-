@@ -1,0 +1,72 @@
+.reports-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+  
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+  
+    .form-group {
+      margin-bottom: 20px;
+    }
+  
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+  
+    .btn {
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s;
+  
+      &.pdf {
+        background-color: #dc3545;
+        color: white;
+  
+        &:hover {
+          background-color: #c82333;
+        }
+      }
+  
+      &.excel {
+        background-color: #28a745;
+        color: white;
+  
+        &:hover {
+          background-color: #218838;
+        }
+      }
+  
+      &.word {
+        background-color: #007bff;
+        color: white;
+  
+        &:hover {
+          background-color: #0069d9;
+        }
+      }
+  
+      &.html {
+        background-color: #ffc107;
+        color: black;
+  
+        &:hover {
+          background-color: #e0a800;
+        }
+      }
+    }
+  }
+  

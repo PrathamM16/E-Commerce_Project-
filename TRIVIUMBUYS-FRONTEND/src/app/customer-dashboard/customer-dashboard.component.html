@@ -1,0 +1,230 @@
+<div class="customer-dashboard">
+  <!-- Hero Banner Section -->
+  <div class="hero-banner">
+    <div class="banner-content">
+      <h1>Discover Amazing Products</h1>
+      <p>Explore our collection of high-quality items at unbeatable prices</p>
+      <button class="shop-now-btn">Shop Now</button>
+    </div>
+    <div class="banner-image-container">
+      <!-- Banner images will be added by you later -->
+    </div>
+  </div>
+
+  <!-- Header with search, category filter & sort -->
+  <header class="header">
+    <div class="search-bar">
+      <input 
+        type="text" 
+        placeholder="Search products..." 
+        [(ngModel)]="searchQuery" 
+        (input)="searchProducts()" 
+        aria-label="Search"
+      />
+    </div>
+    <div class="filters">
+      <!-- Category Filter -->
+      <select 
+        [(ngModel)]="selectedCategory" 
+        (change)="filterByCategory(selectedCategory)"
+        aria-label="Filter by category">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+      </select>
+
+      <!-- Sort by Price Filter -->
+      <select 
+        [(ngModel)]="sortOption"
+        (change)="sortProducts()"
+        aria-label="Sort by price"
+        style="margin-left: 10px;">
+        <option value="">Sort by Price</option>
+        <option value="lowToHigh">Price: Low to High</option>
+        <option value="highToLow">Price: High to Low</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- Featured Categories -->
+  <div class="featured-categories">
+    <h2>Shop by Category</h2>
+    <div class="category-cards">
+      <div class="category-card" *ngFor="let cat of categories.slice(0, 4)">
+        <div class="category-card-inner">
+          <div class="category-card-front">
+            <div class="category-placeholder"></div>
+            <h3>{{ cat.name }}</h3>
+          </div>
+          <div class="category-card-back">
+            <button (click)="filterByCategory(cat.id)">View Products</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Animated Banner Section -->
+  <div class="animated-banner">
+    <div class="banner-slider">
+      <div 
+        class="slide" 
+        *ngFor="let img of bannerImages; let i = index" 
+        [class.active]="i === currentSlide"
+      >
+        <img 
+          [src]="img" 
+          alt="Banner Image {{i + 1}}" 
+          onerror="this.src='https://via.placeholder.com/1200x400?text=Image+Not+Found'"
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <div class="banner-controls">
+      <button class="banner-control prev" (click)="prevSlide()" aria-label="Previous slide">‹</button>
+      <button class="banner-control next" (click)="nextSlide()" aria-label="Next slide">›</button>
+    </div>
+
+    <div class="banner-indicators">
+      <span 
+        *ngFor="let img of bannerImages; let i = index" 
+        class="indicator" 
+        [class.active]="i === currentSlide"
+        (click)="goToSlide(i)"
+      ></span>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-section">
+    <h2>Our Products</h2>
+    <div class="products-grid">
+      <div 
+        *ngFor="let product of paginatedProducts; let i = index" 
+        class="product-card"
+        [class.out-of-stock]="product.stock === 0"
+        [attr.style]="'--card-index:' + i"
+      >
+
+        <!-- Discount Ribbon -->
+        <div class="discount-ribbon" *ngIf="product.discount">
+          {{ product.discount }}% OFF
+        </div>
+
+        <!-- Product Image -->
+        <div class="image-container" (click)="openProductDetails(product.id)">
+          <div class="glow-effect"></div>
+          <img 
+            [src]="'http://localhost:8080/uploads/' + product.id" 
+            alt="{{ product.name }}" 
+            onerror="this.src='assets/placeholder.jpg'"
+            loading="lazy"
+          />
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+          <h5 (click)="openProductDetails(product.id)">{{ product.name }}</h5>
+
+          <div class="rating-section" *ngIf="product.rating">
+            <span class="rating-badge">{{ product.rating }}</span>
+            <small>({{ product.reviews || 0 }} reviews)</small>
+          </div>
+
+          <div class="price-section">
+            <b>₹{{ product.price }}</b>
+            <small *ngIf="product.oldPrice"><del>₹{{ product.oldPrice }}</del></small>
+          </div>
+
+          <div class="product-controls">
+            <div class="quantity-controls">
+              <button 
+                (click)="decreaseQuantity(product)" 
+                aria-label="Decrease quantity"
+                [disabled]="product.quantity <= 1 || product.stock === 0"
+              >−</button>
+
+              <input
+                type="number"
+                [(ngModel)]="product.quantity"
+                [min]="1"
+                [max]="product.stock"
+                (change)="onQuantityManualInput(product)"
+                aria-label="Quantity"
+                [disabled]="product.stock === 0"
+              />
+
+              <button 
+                (click)="increaseQuantity(product)" 
+                aria-label="Increase quantity"
+                [disabled]="product.quantity >= product.stock || product.stock === 0"
+              >+</button>
+            </div>
+
+            <button 
+              class="add-to-cart-btn" 
+              (click)="addToCart(product)"
+              [disabled]="product.stock === 0"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-controls" *ngIf="totalPages > 1">
+    <button 
+      class="page-button prev" 
+      [class.disabled]="currentPage === 1"
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      aria-label="Previous page"
+    >
+      ← Prev
+    </button>
+
+    <button 
+      *ngFor="let page of visiblePageNumbers()" 
+      class="page-button"
+      [class.active]="page === currentPage"
+      (click)="changePage(page)"
+      [attr.aria-current]="page === currentPage ? 'page' : null"
+    >
+      {{ page }}
+    </button>
+
+    <span class="page-dots" *ngIf="showEndEllipsis()">...</span>
+
+    <button 
+      class="page-button"
+      [class.active]="totalPages === currentPage"
+      (click)="changePage(totalPages)"
+      *ngIf="showLastPageButton()"
+    >
+      {{ totalPages }}
+    </button>
+
+    <button 
+      class="page-button next" 
+      [class.disabled]="currentPage === totalPages"
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      aria-label="Next page"
+    >
+      Next →
+    </button>
+  </div>
+  
+</div>
+<!-- Cartoon Animation Moving + Typing Text -->
+<div *ngIf="showCartoon" class="cartoon-animation">
+  <img class="cartoon-img" [src]="cartoonImageUrl" alt="Cartoon" />
+  <div class="cartoon-text">
+    <span>{{ typedText }}</span>
+  </div>
+</div>
+
+

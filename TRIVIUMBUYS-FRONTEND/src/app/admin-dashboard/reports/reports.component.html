@@ -1,0 +1,39 @@
+<div class="reports-container">
+    <h2 class="title">Export Management Reports</h2>
+  
+    <div class="form-group">
+      <label>Select Management Section:</label>
+      <select class="form-control" [(ngModel)]="selectedManagement">
+        <option value="dashboard">Dashboard Management</option>
+        <option value="products">Product Management</option>
+        <option value="customers">Customer Management</option>
+        <option value="orders">Order Management</option>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label>Select Duration:</label>
+      <select class="form-control" [(ngModel)]="selectedDuration">
+        <option value="today">Today</option>
+        <option value="yesterday">Yesterday</option>
+        <option value="lastweek">Last Week</option>
+        <option value="lastmonth">Last Month</option>
+        <option value="lastyear">Last Year</option>
+        <option value="last5years">Last 5 Years</option>
+        <option value="all">All Time</option>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label>Select Format:</label>
+      <select class="form-control" [(ngModel)]="selectedFormat">
+        <option value="pdf">PDF</option>
+        <option value="excel">Excel</option>
+        <option value="word">Word</option>
+        <option value="html">HTML</option>
+      </select>
+    </div>
+  
+    <button class="btn btn-primary" (click)="exportReport()">Export Report</button>
+  </div>
+  

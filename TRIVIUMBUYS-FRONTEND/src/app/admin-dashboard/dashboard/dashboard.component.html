@@ -1,0 +1,171 @@
+<div class="admin-dashboard">
+  <!-- Header section with welcome message and time -->
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <h1 class="welcome-text">Welcome, <span class="username">{{ adminName }}</span></h1>
+      <p class="date-time">{{ currentDate | date:'EEEE, MMMM d, y' }} • <span class="live-time">{{ currentTime }}</span></p>
+    </div>
+    <div class="profile-section">
+      <div class="notifications">
+        <span class="icon notification-icon">
+          <i class="fas fa-bell"></i>
+        </span>
+        <span class="badge">3</span>
+      </div>
+      <!-- <div class="profile-img">
+        <img [src]="adminAvatar || 'assets/images/pratham.jpg'" alt="Admin Profile">
+      </div> -->
+    </div>
+  </div>
+
+  <!-- Main dashboard content -->
+  <div class="dashboard-content" *ngIf="!loading && !error">
+    <!-- Summary cards section -->
+    <div class="cards-grid">
+      <div class="stat-card revenue-card" (mouseenter)="animateValue('revenueCounter', 0, dashboardData?.totalRevenue || 0, 1000)">
+        <div class="card-icon">
+          <i class="fas fa-rupee-sign"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Total Revenue</h3>
+          <p class="card-value">₹<span id="revenueCounter">{{ dashboardData?.totalRevenue | number }}</span></p>
+          <p class="trend up"><i class="fas fa-arrow-up"></i> 12.5% vs last month</p>
+        </div>
+      </div>
+
+      <div class="stat-card orders-card" (mouseenter)="animateValue('ordersCounter', 0, dashboardData?.totalOrders || 0, 800)">
+        <div class="card-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Total Orders</h3>
+          <p class="card-value"><span id="ordersCounter">{{ dashboardData?.totalOrders }}</span></p>
+          <p class="trend up"><i class="fas fa-arrow-up"></i> 8.3% vs last month</p>
+        </div>
+      </div>
+
+      <div class="stat-card customers-card" (mouseenter)="animateValue('customersCounter', 0, dashboardData?.totalCustomers || 0, 800)">
+        <div class="card-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Total Customers</h3>
+          <p class="card-value"><span id="customersCounter">{{ dashboardData?.totalCustomers }}</span></p>
+          <p class="trend up"><i class="fas fa-arrow-up"></i> 5.2% vs last month</p>
+        </div>
+      </div>
+
+      <div class="stat-card products-card" (mouseenter)="animateValue('productsCounter', 0, dashboardData?.totalProducts || 0, 800)">
+        <div class="card-icon">
+          <i class="fas fa-box"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Total Products</h3>
+          <p class="card-value"><span id="productsCounter">{{ dashboardData?.totalProducts }}</span></p>
+          <p class="trend down"><i class="fas fa-arrow-down"></i> 2.1% vs last month</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts section -->
+    <div class="charts-container">
+      <!-- Revenue chart -->
+      <div class="chart-card revenue-chart-card">
+        <div class="chart-header">
+          <h3 class="chart-title">Revenue Overview</h3>
+          <div class="chart-actions">
+            <select class="period-selector" [(ngModel)]="revenuePeriod" (change)="updateRevenueChart()">
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+        <div class="chart-body">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Category sales chart -->
+      <div class="chart-card category-chart-card">
+        <div class="chart-header">
+          <h3 class="chart-title">Sales by Category</h3>
+          <div class="chart-actions">
+            <button class="refresh-btn" (click)="refreshCategoryChart()">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-body">
+          <canvas id="salesPieChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent orders table -->
+    <div class="recent-orders-card">
+      <div class="card-header">
+        <h3 class="card-title">Recent Orders</h3>
+        <a href="/admin/orders" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" *ngIf="dashboardData?.recentOrders?.length > 0">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of dashboardData.recentOrders" class="order-row" [ngClass]="{'animated': true}">
+                <td class="order-id">#{{ order.orderId }}</td>
+                <td class="customer-name">{{ order.customerName }}</td>
+                <td class="order-date">{{ order.date | date:'medium' }}</td>
+                <td class="order-amount">₹{{ order.total | number:'1.2-2' }}</td>
+                <td class="order-status">
+                  <span class="status-badge" [ngClass]="order.status.toLowerCase()">
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td class="order-actions">
+                  <button class="action-btn view-btn" title="View Order" [routerLink]="['/admin/orders', order.orderId]">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="no-data" *ngIf="dashboardData?.recentOrders?.length === 0">
+          <i class="fas fa-box-open no-data-icon"></i>
+          <p>No recent orders found</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+    <p>Loading dashboard data...</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="error-container" *ngIf="error">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>Oops! Something went wrong</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="loadDashboardData()">Retry</button>
+  </div>
+</div>

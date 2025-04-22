@@ -1,0 +1,93 @@
+<h2>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="form-container">
+
+  <!-- IMAGE PREVIEW -->
+  <div *ngIf="imagePreview" style="text-align: center; margin-bottom: 15px;">
+    <img [src]="imagePreview" alt="Product Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+  </div>
+
+  <!-- NAME + DESCRIPTION -->
+  <div class="row">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Name*</mat-label>
+      <input matInput formControlName="name" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Description*</mat-label>
+      <textarea matInput formControlName="description" rows="3" required></textarea>
+    </mat-form-field>
+  </div>
+
+  <!-- BRAND + CATEGORY -->
+  <div class="row">
+    <mat-form-field appearance="fill" class="half-width">
+      <mat-label>Brand*</mat-label>
+      <input matInput formControlName="brand" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="half-width">
+      <mat-label>Category*</mat-label>
+      <mat-select formControlName="categoryId" required>
+        <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- MANAGE CATEGORIES BUTTON -->
+  <div class="row" style="margin-bottom: 10px;">
+    <button mat-button color="accent" (click)="openManageCategories()" type="button">
+      + Manage Categories
+    </button>
+  </div>
+
+  <!-- PRICE + DISCOUNT -->
+  <div class="row">
+    <mat-form-field appearance="fill" class="half-width">
+      <mat-label>Price (₹)*</mat-label>
+      <input matInput type="number" formControlName="price" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="half-width">
+      <mat-label>Discount (%)</mat-label>
+      <input matInput type="number" formControlName="discount">
+    </mat-form-field>
+  </div>
+
+  <!-- STOCK + TAX -->
+  <div class="row">
+    <mat-form-field appearance="fill" class="half-width">
+      <mat-label>Stock*</mat-label>
+      <input matInput type="number" formControlName="stock" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="half-width">
+      <mat-label>Tax Rate (%)</mat-label>
+      <input matInput type="number" formControlName="taxRate">
+    </mat-form-field>
+  </div>
+
+  <!-- UPLOAD IMAGE -->
+  <div class="upload-row" style="margin-bottom: 20px;">
+    <label style="font-weight: 600;">Upload Image {{ isEditMode ? '' : '*' }}</label><br>
+    <input type="file" (change)="onFileChange($event)" accept="image/*">
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="button-row" style="text-align: center;">
+    <button mat-raised-button color="primary" type="submit" style="margin-right: 10px;">
+      {{ isEditMode ? 'Update' : 'Save' }}
+    </button>
+    <button mat-button color="warn" type="button" (click)="cancel()">
+      Cancel
+    </button>
+  </div>
+  <!-- Image Preview -->
+<div *ngIf="imagePreview" class="image-preview">
+  <img [src]="imagePreview" alt="Product Image">
+</div>
+
+
+
+</form>
