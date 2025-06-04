@@ -57,7 +57,10 @@ public class SecurityConfig {
                     "/swagger-ui/**",
                     "/swagger-resources/**",
                     "/webjars/**",
-                    "/api/public/**"
+                    "/api/public/**",
+                    "/actuator/health",
+                    "/actuator/info",
+                    "/actuator/prometheus"
                 ).permitAll()
                 .requestMatchers("/api/analytics/upload-orders").hasAnyAuthority("ADMIN")
                 .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
